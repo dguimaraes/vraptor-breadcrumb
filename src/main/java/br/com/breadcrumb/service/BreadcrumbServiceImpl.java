@@ -36,16 +36,10 @@ public class BreadcrumbServiceImpl implements BreadcrumbService {
 		
 		ItemBreadcrumb item = null;
 		Method m = method.getMethod();
-		Annotation[] annotations = m.getDeclaredAnnotations();
 		
-		for (Annotation annotation : annotations) {
-			if (annotation instanceof BreadCrumb) {
-				item = new ItemBreadcrumb(
-						bundle.getString(((BreadCrumb) annotation).message()),
+		item = new ItemBreadcrumb(bundle.getString(m.getAnnotation(BreadCrumb.class).message()),
 						getUriWithoutContext(request),
-						((BreadCrumb) annotation).level());
-			}
-		}
+						m.getAnnotation(BreadCrumb.class).level());
 
 		return item;
 	}
